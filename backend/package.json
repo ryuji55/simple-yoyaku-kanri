@@ -5,7 +5,6 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
-    "prepare": "npm install --include=dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
