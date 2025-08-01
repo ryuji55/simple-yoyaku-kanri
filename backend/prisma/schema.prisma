@@ -13,11 +13,151 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum StaffRole {
+  owner
+  staff
+}
+enum Gender {
+  male
+  female
+  other
+}
+
 model Admin {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Store {
+  id                        String     @id @default(uuid())
+  name                      String
+  email                     String     @unique
+  password                  String
+  phone                     String
+  is_active                 Boolean    @default(true)
+  cancel_deadline_hour      Int
+  online_booking_deadline_minute Int
+  max_reservation_month_ahead Int
+  createdAt                 DateTime   @default(now())
+  updatedAt                 DateTime   @updatedAt
+
+  staffs                    Staff[]
+  menus                     Menu[]
+  customers                 Customer[]
+  bookings                  Booking[]
+}
+
+model Staff {
+  id         String   @id @default(uuid())
+  store      Store    @relation(fields: [storeId], references: [id])
+  storeId    String
+  name       String
+  email      String?
+  profile    String?
+  role       StaffRole
+  gender     Gender?
+  birthday   DateTime?
+  is_active  Boolean  @default(true)
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  bookings   Booking[]
+  schedules  StaffSchedule[]
+}
+
+model StaffSchedule {
+  id         String   @id @default(uuid())
+  staff      Staff    @relation(fields: [staffId], references: [id])
+  staffId    String
+  start_time DateTime
+  end_time   DateTime
+  type       String?
+  note       String?
+  is_active  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Menu {
+  id          String   @id @default(uuid())
+  store       Store    @relation(fields: [storeId], references: [id])
+  storeId     String
+  name        String
+  description String?
+  duration_min Int
+  price       Int
+  is_active   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  bookingMenus BookingMenu[]
+}
+
+model Customer {
+  id         String   @id @default(uuid())
+  store      Store    @relation(fields: [storeId], references: [id])
+  storeId    String
+  name       String
+  email      String
+  phone      String
+  gender     Gender?
+  birthday   DateTime?
+  password   String
+  is_active  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  bookings   Booking[]
+  notifications NotificationLog[]
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  store      Store    @relation(fields: [storeId], references: [id])
+  storeId    String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+  staff      Staff    @relation(fields: [staffId], references: [id])
+  staffId    String
+  start_time DateTime
+  end_time   DateTime
+  status     String
+  repeat_after Int?
+  is_active  Boolean  @default(true)
+  note       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  bookingMenus BookingMenu[]
+  notifications NotificationLog[]
+}
+
+model BookingMenu {
+  id         String   @id @default(uuid())
+  booking    Booking  @relation(fields: [bookingId], references: [id])
+  bookingId  String
+  menu       Menu     @relation(fields: [menuId], references: [id])
+  menuId     String
+  order      Int
+  price      Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model NotificationLog {
+  id         String   @id @default(uuid())
+  booking    Booking  @relation(fields: [bookingId], references: [id])
+  bookingId  String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+  type       String
+  status     String
+  sentAt     DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
