@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "lint": "biome lint ./frontend ./backend",
+    "lint:fix": "biome lint --apply ./frontend ./backend",
+    "format": "biome format ./frontend ./backend",
+    "format:fix": "biome format --write ./frontend ./backend",
+    "check": "biome check ./frontend ./backend",
+    "check:fix": "biome check --apply ./frontend ./backend"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.3",
+    "lefthook": "^1.12.2"
+  }
+}
