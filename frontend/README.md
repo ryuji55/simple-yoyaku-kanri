@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend
 
-## Getting Started
+予約管理システムのフロントエンド
 
-First, run the development server:
+## セットアップ
+
+1. 環境変数の設定
+```bash
+cp .env.local.example .env.local
+```
+
+2. 依存関係のインストール
+```bash
+npm install
+```
+
+## 開発
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000 でアクセス可能
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ビルド
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## 画面構成
 
-To learn more about Next.js, take a look at the following resources:
+### 認証
+- `/login` - ログイン画面（顧客・店舗・管理者）
+- `/register/customer` - 顧客登録
+- `/register/store` - 店舗登録
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 顧客向け
+- `/customer` - 顧客ダッシュボード
+- `/customer/bookings` - 予約一覧
+- `/customer/booking/new` - 新規予約
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 店舗向け
+- `/store` - 店舗ダッシュボード
+- `/store/bookings` - 予約管理
+- `/store/staff` - スタッフ管理
+- `/store/menus` - メニュー管理
+- `/store/settings` - 店舗設定
 
-## Deploy on Vercel
+### 管理者向け
+- `/admin` - 管理者ダッシュボード
+- `/admin/stores` - 店舗管理
+- `/admin/users` - ユーザー管理
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 技術スタック
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 15 (App Router)
+- TypeScript
+- CSS Modules
+- React Hook Form
+- Axios
+- JWT認証

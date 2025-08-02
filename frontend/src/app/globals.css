@@ -1,13 +1,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary: #0070f3;
+  --primary-hover: #0051cc;
+  --secondary: #f0f0f0;
+  --secondary-hover: #e0e0e0;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --border: #ddd;
+  --error: #dc2626;
 }
 
 html,
