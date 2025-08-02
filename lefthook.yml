@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: "src/**/*.{js,jsx,ts,tsx}"
+      run: npx @biomejs/biome check --apply {staged_files}
+      exclude: ".next/**"
+    types:
+      glob: "src/**/*.{ts,tsx}"
+      run: npx tsc --noEmit
+      exclude: ".next/**"
