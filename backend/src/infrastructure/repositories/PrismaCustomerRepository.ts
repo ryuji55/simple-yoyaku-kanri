@@ -36,15 +36,18 @@ export class PrismaCustomerRepository implements ICustomerRepository {
   }
 
   async save(customer: Customer): Promise<Customer> {
-    const createData = {
+    const createData: any = {
       name: customer.name,
       email: customer.email.toString(),
       password: customer.password.toString(),
       storeId: customer.storeId,
       gender: customer.gender?.toString() as any,
       birthday: customer.birthday,
-      is_active: customer.isActive,
-      ...(customer.phone && customer.phone !== '' ? { phone: customer.phone } : {})
+      is_active: customer.isActive
+    }
+
+    if (customer.phone && customer.phone !== '') {
+      createData.phone = customer.phone
     }
 
     const saved = await this.prisma.customer.create({

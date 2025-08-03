@@ -7,7 +7,9 @@ import { errorHandler } from "./src/presentation/middlewares/errorHandler";
 const app = express();
 
 app.use(cors({
-  origin: config.frontend.url,
+  origin: config.nodeEnv === 'development' 
+    ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003'] 
+    : config.frontend.url,
   credentials: true
 }));
 app.use(express.json());
