@@ -1,4 +1,4 @@
-import { PrismaClient, Admin as PrismaAdmin } from '@prisma/client'
+import { PrismaClient, Admin as PrismaAdmin } from '../../../generated/prisma'
 import { IAdminRepository } from '../../domain/repositories/IAdminRepository'
 import { Admin } from '../../domain/entities/Admin'
 import { Email } from '../../domain/valueObjects/Email'
@@ -43,10 +43,10 @@ export class PrismaAdminRepository implements IAdminRepository {
     return new Admin(
       prismaAdmin.id,
       new Email(prismaAdmin.email),
-      new Password(prismaAdmin.password),
+      Password.fromHash(prismaAdmin.password),
       prismaAdmin.is_active,
-      prismaAdmin.created_at,
-      prismaAdmin.updated_at
+      prismaAdmin.createdAt,
+      prismaAdmin.updatedAt
     )
   }
 }

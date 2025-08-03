@@ -9,9 +9,10 @@ export interface JwtPayload {
 
 export class JwtService {
   generateToken(payload: JwtPayload): string {
+    const expiresIn = config.jwt.expiresIn
     return jwt.sign(payload, config.jwt.secret, {
-      expiresIn: config.jwt.expiresIn
-    })
+      expiresIn
+    } as jwt.SignOptions)
   }
 
   verifyToken(token: string): JwtPayload {

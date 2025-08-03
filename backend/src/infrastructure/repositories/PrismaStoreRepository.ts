@@ -1,4 +1,4 @@
-import { PrismaClient, Store as PrismaStore } from '@prisma/client'
+import { PrismaClient, Store as PrismaStore } from '../../../generated/prisma'
 import { IStoreRepository } from '../../domain/repositories/IStoreRepository'
 import { Store } from '../../domain/entities/Store'
 import { Email } from '../../domain/valueObjects/Email'
@@ -55,14 +55,14 @@ export class PrismaStoreRepository implements IStoreRepository {
       prismaStore.id,
       prismaStore.name,
       new Email(prismaStore.email),
-      new Password(prismaStore.password),
+      Password.fromHash(prismaStore.password),
       prismaStore.phone,
       prismaStore.is_active,
       prismaStore.cancel_deadline_hour,
       prismaStore.online_booking_deadline_minute,
       prismaStore.max_reservation_month_ahead,
-      prismaStore.created_at,
-      prismaStore.updated_at
+      prismaStore.createdAt,
+      prismaStore.updatedAt
     )
   }
 }

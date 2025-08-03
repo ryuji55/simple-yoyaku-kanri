@@ -1,4 +1,4 @@
-import { PrismaClient, Staff as PrismaStaff } from '@prisma/client'
+import { PrismaClient, Staff as PrismaStaff } from '../../../generated/prisma'
 import { IStaffRepository } from '../../domain/repositories/IStaffRepository'
 import { Staff, StaffRole } from '../../domain/entities/Staff'
 import { Email } from '../../domain/valueObjects/Email'
@@ -28,7 +28,7 @@ export class PrismaStaffRepository implements IStaffRepository {
     const staff = await this.prisma.staff.findFirst({
       where: {
         email: email.toString(),
-        store_id: storeId
+        storeId: storeId
       }
     })
 
@@ -38,7 +38,7 @@ export class PrismaStaffRepository implements IStaffRepository {
   async findOwnerByStoreId(storeId: string): Promise<Staff | null> {
     const staff = await this.prisma.staff.findFirst({
       where: {
-        store_id: storeId,
+        storeId: storeId,
         role: 'owner'
       }
     })
@@ -51,7 +51,7 @@ export class PrismaStaffRepository implements IStaffRepository {
       name: staff.name,
       email: staff.email.toString(),
       password: staff.password.toString(),
-      store_id: staff.storeId,
+      storeId: staff.storeId,
       role: staff.staffRole,
       profile: staff.profile,
       gender: staff.gender?.toString() as any,
@@ -69,13 +69,13 @@ export class PrismaStaffRepository implements IStaffRepository {
   private toDomain(prismaStaff: PrismaStaff): Staff {
     return new Staff(
       prismaStaff.id,
-      new Email(prismaStaff.email),
-      new Password(prismaStaff.password),
+      new Email(prismaStaff.email!),
+      Password.fromHash(prismaStaff.password),
       prismaStaff.is_active,
-      prismaStaff.created_at,
-      prismaStaff.updated_at,
+      prismaStaff.createdAt,
+      prismaStaff.updatedAt,
       prismaStaff.name,
-      prismaStaff.store_id,
+      prismaStaff.storeId,
       prismaStaff.role as StaffRole,
       prismaStaff.profile || undefined,
       prismaStaff.gender ? new Gender(prismaStaff.gender as string) : undefined,

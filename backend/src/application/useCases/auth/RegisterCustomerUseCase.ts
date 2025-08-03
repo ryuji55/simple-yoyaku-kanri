@@ -3,6 +3,7 @@ import { IStoreRepository } from '../../../domain/repositories/IStoreRepository'
 import { AuthService } from '../../../domain/services/AuthService'
 import { Customer } from '../../../domain/entities/Customer'
 import { Email } from '../../../domain/valueObjects/Email'
+import { Password } from '../../../domain/valueObjects/Password'
 import { ConflictError, NotFoundError } from '../../../shared/errors/AppError'
 import { RegisterCustomerDto, AuthResultDto } from '../../dto/auth.dto'
 import { JwtService } from '../../../infrastructure/security/JwtService'
@@ -42,10 +43,13 @@ export class RegisterCustomerUseCase {
     })
 
     const hashedPassword = await this.authService.hashPassword(customer.password)
-    const savedCustomer = await this.customerRepository.save({
-      ...customer,
-      password: { toString: () => hashedPassword } as any
-    })
+    const customerWithHashedPassword = Object.assign(
+      Object.create(Object.getPrototypeOf(customer)),
+      customer,
+      { password: Password.fromHash(hashedPassword) }
+    )
+    
+    const savedCustomer = await this.customerRepository.save(customerWithHashedPassword)
 
     const token = this.jwtService.generateToken({
       id: savedCustomer.id,

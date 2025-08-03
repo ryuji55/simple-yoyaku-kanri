@@ -1,4 +1,4 @@
-import { PrismaClient, Customer as PrismaCustomer } from '@prisma/client'
+import { PrismaClient, Customer as PrismaCustomer } from '../../../generated/prisma'
 import { ICustomerRepository } from '../../domain/repositories/ICustomerRepository'
 import { Customer } from '../../domain/entities/Customer'
 import { Email } from '../../domain/valueObjects/Email'
@@ -28,7 +28,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
     const customer = await this.prisma.customer.findFirst({
       where: {
         email: email.toString(),
-        store_id: storeId
+        storeId: storeId
       }
     })
 
@@ -40,7 +40,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: customer.name,
       email: customer.email.toString(),
       password: customer.password.toString(),
-      store_id: customer.storeId,
+      storeId: customer.storeId,
       phone: customer.phone,
       gender: customer.gender?.toString() as any,
       birthday: customer.birthday,
@@ -58,12 +58,12 @@ export class PrismaCustomerRepository implements ICustomerRepository {
     return new Customer(
       prismaCustomer.id,
       new Email(prismaCustomer.email),
-      new Password(prismaCustomer.password),
+      Password.fromHash(prismaCustomer.password),
       prismaCustomer.is_active,
-      prismaCustomer.created_at,
-      prismaCustomer.updated_at,
+      prismaCustomer.createdAt,
+      prismaCustomer.updatedAt,
       prismaCustomer.name,
-      prismaCustomer.store_id,
+      prismaCustomer.storeId,
       prismaCustomer.phone,
       prismaCustomer.gender ? new Gender(prismaCustomer.gender as string) : undefined,
       prismaCustomer.birthday || undefined

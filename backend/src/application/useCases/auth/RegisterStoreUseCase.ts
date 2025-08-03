@@ -4,6 +4,7 @@ import { AuthService } from '../../../domain/services/AuthService'
 import { Store } from '../../../domain/entities/Store'
 import { Staff } from '../../../domain/entities/Staff'
 import { Email } from '../../../domain/valueObjects/Email'
+import { Password } from '../../../domain/valueObjects/Password'
 import { ConflictError } from '../../../shared/errors/AppError'
 import { RegisterStoreDto, AuthResultDto } from '../../dto/auth.dto'
 import { JwtService } from '../../../infrastructure/security/JwtService'
@@ -32,10 +33,13 @@ export class RegisterStoreUseCase {
     })
 
     const hashedPassword = await this.authService.hashPassword(store.password)
-    const savedStore = await this.storeRepository.save({
-      ...store,
-      password: { toString: () => hashedPassword } as any
-    })
+    const storeWithHashedPassword = Object.assign(
+      Object.create(Object.getPrototypeOf(store)),
+      store,
+      { password: Password.fromHash(hashedPassword) }
+    )
+    
+    const savedStore = await this.storeRepository.save(storeWithHashedPassword)
 
     const staff = Staff.createNew({
       email: dto.email,
@@ -45,10 +49,13 @@ export class RegisterStoreUseCase {
       staffRole: 'owner'
     })
 
-    const savedStaff = await this.staffRepository.save({
-      ...staff,
-      password: { toString: () => hashedPassword } as any
-    })
+    const staffWithHashedPassword = Object.assign(
+      Object.create(Object.getPrototypeOf(staff)),
+      staff,
+      { password: Password.fromHash(hashedPassword) }
+    )
+    
+    const savedStaff = await this.staffRepository.save(staffWithHashedPassword)
 
     const token = this.jwtService.generateToken({
       id: savedStaff.id,
