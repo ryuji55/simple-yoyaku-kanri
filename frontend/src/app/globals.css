@@ -1,6 +1,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-color: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-rgb: 59, 130, 246;
+  --secondary-color: #6b7280;
+  --secondary-dark: #4b5563;
+  --border-color: #e5e7eb;
+  --text-color: #1f2937;
+  --background-hover: #f3f4f6;
+  --error-color: #ef4444;
+  --error-rgb: 239, 68, 68;
 }
 
 @media (prefers-color-scheme: dark) {
