@@ -20,7 +20,10 @@ export const registerStoreValidator: ValidationChain[] = [
     .isLength({ min: 6 }).withMessage('パスワードは6文字以上で入力してください'),
   body('phone')
     .notEmpty().withMessage('電話番号は必須です')
-    .matches(/^[\d-]+$/).withMessage('有効な電話番号を入力してください')
+    .matches(/^[\d-]+$/).withMessage('有効な電話番号を入力してください'),
+  body('ownerName')
+    .notEmpty().withMessage('オーナー名は必須です')
+    .isLength({ min: 1, max: 100 }).withMessage('オーナー名は1〜100文字で入力してください')
 ]
 
 export const registerCustomerValidator: ValidationChain[] = [
@@ -37,7 +40,7 @@ export const registerCustomerValidator: ValidationChain[] = [
     .notEmpty().withMessage('パスワードは必須です')
     .isLength({ min: 6 }).withMessage('パスワードは6文字以上で入力してください'),
   body('phone')
-    .notEmpty().withMessage('電話番号は必須です')
+    .optional()
     .matches(/^[\d-]+$/).withMessage('有効な電話番号を入力してください'),
   body('gender')
     .optional()

@@ -8,6 +8,7 @@ export interface RegisterStoreDto {
   email: string
   password: string
   phone: string
+  ownerName: string
 }
 
 export interface RegisterCustomerDto {
@@ -15,7 +16,7 @@ export interface RegisterCustomerDto {
   name: string
   email: string
   password: string
-  phone: string
+  phone?: string
   gender?: string
   birthday?: string
 }

@@ -6,7 +6,7 @@ import { Gender } from '../valueObjects/Gender'
 export interface ICustomer extends User {
   name: string
   storeId: string
-  phone: string
+  phone?: string
   gender?: Gender
   birthday?: Date
 }
@@ -21,7 +21,7 @@ export class Customer extends User implements ICustomer {
     updatedAt: Date,
     public readonly name: string,
     public readonly storeId: string,
-    public readonly phone: string,
+    public readonly phone?: string,
     public readonly gender?: Gender,
     public readonly birthday?: Date
   ) {
@@ -33,7 +33,7 @@ export class Customer extends User implements ICustomer {
     password: string
     name: string
     storeId: string
-    phone: string
+    phone?: string
     gender?: string
     birthday?: string
   }): Customer {
@@ -46,7 +46,7 @@ export class Customer extends User implements ICustomer {
       new Date(),
       params.name,
       params.storeId,
-      params.phone,
+      params.phone || '',
       params.gender ? new Gender(params.gender) : undefined,
       params.birthday ? new Date(params.birthday) : undefined
     )

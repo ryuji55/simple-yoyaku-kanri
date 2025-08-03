@@ -36,19 +36,19 @@ export class PrismaCustomerRepository implements ICustomerRepository {
   }
 
   async save(customer: Customer): Promise<Customer> {
-    const data = {
+    const createData = {
       name: customer.name,
       email: customer.email.toString(),
       password: customer.password.toString(),
       storeId: customer.storeId,
-      phone: customer.phone,
       gender: customer.gender?.toString() as any,
       birthday: customer.birthday,
-      is_active: customer.isActive
+      is_active: customer.isActive,
+      ...(customer.phone && customer.phone !== '' ? { phone: customer.phone } : {})
     }
 
     const saved = await this.prisma.customer.create({
-      data
+      data: createData
     })
 
     return this.toDomain(saved)
@@ -64,7 +64,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       prismaCustomer.updatedAt,
       prismaCustomer.name,
       prismaCustomer.storeId,
-      prismaCustomer.phone,
+      prismaCustomer.phone || undefined,
       prismaCustomer.gender ? new Gender(prismaCustomer.gender as string) : undefined,
       prismaCustomer.birthday || undefined
     )

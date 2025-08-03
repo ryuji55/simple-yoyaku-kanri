@@ -44,7 +44,7 @@ export class RegisterStoreUseCase {
     const staff = Staff.createNew({
       email: dto.email,
       password: dto.password,
-      name: '店舗オーナー',
+      name: dto.ownerName,
       storeId: savedStore.id,
       staffRole: 'owner'
     })
