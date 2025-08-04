@@ -1,0 +1,55 @@
+.container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.header {
+  background-color: white;
+  border-bottom: 1px solid var(--border-color);
+  padding: 2rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.storeName {
+  font-size: 1.125rem;
+  color: #6b7280;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.section {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+}

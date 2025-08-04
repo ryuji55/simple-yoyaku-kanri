@@ -1,9 +1,11 @@
 import { Router } from 'express'
 import authRoutes from './authRoutes'
+import storeRoutes from './storeRoutes'
 
 const router = Router()
 
 router.use('/auth', authRoutes)
+router.use('/stores', storeRoutes)
 
 router.get('/health', (req, res) => {
   res.json({

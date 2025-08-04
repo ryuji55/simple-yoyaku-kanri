@@ -23,6 +23,7 @@ export const useAuth = () => {
       const { token, user } = response
 
       localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
       setAuthState({
         user,
         token,
@@ -54,6 +55,7 @@ export const useAuth = () => {
       const { token, user } = response
 
       localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
       setAuthState({
         user,
         token,
@@ -73,6 +75,7 @@ export const useAuth = () => {
       const { token, user } = response
 
       localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
       setAuthState({
         user,
         token,
@@ -88,6 +91,7 @@ export const useAuth = () => {
 
   const logout = useCallback(() => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     setAuthState({
       user: null,
       token: null,

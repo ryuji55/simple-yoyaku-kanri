@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { config } from "./src/config/env";
 import routes from "./src/presentation/routes";
+import redirectRoutes from "./src/presentation/routes/redirectRoutes";
 import { errorHandler } from "./src/presentation/middlewares/errorHandler";
 
 const app = express();
@@ -20,6 +21,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api", routes);
+app.use(redirectRoutes);
 
 app.use(errorHandler);
 
