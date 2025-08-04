@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { useAuth } from '../hooks/useAuth'
+import { useQueryParams } from '@/hooks/useQueryParams'
 import styles from './RegisterForm.module.css'
 
 const registerCustomerSchema = z.object({
@@ -29,14 +30,23 @@ export const RegisterCustomerForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const { registerCustomer } = useAuth()
+  const { storeCode } = useQueryParams()
+  const hasStoreCodeFromQR = !!storeCode
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<RegisterCustomerFormData>({
     resolver: zodResolver(registerCustomerSchema),
   })
+
+  useEffect(() => {
+    if (hasStoreCodeFromQR) {
+      setValue('storeCode', storeCode)
+    }
+  }, [hasStoreCodeFromQR, storeCode, setValue])
 
   const onSubmit = async (data: RegisterCustomerFormData) => {
     setIsLoading(true)
@@ -60,6 +70,12 @@ export const RegisterCustomerForm: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <h2 className={styles.title}>お客様新規登録</h2>
 
+      {hasStoreCodeFromQR && (
+        <div className={styles.storeInfo}>
+          店舗コード: {storeCode} で登録します
+        </div>
+      )}
+
       {error && <div className={styles.error}>{error}</div>}
 
       <Input
@@ -77,13 +93,19 @@ export const RegisterCustomerForm: React.FC = () => {
         fullWidth
       />
 
-      <Input
-        label="店舗コード"
-        {...register('storeCode')}
-        error={errors.storeCode?.message}
-        placeholder="例: ABC123"
-        fullWidth
-      />
+      {!hasStoreCodeFromQR && (
+        <Input
+          label="店舗コード"
+          {...register('storeCode')}
+          error={errors.storeCode?.message}
+          placeholder="例: ABC123"
+          fullWidth
+        />
+      )}
+
+      {hasStoreCodeFromQR && (
+        <input type="hidden" {...register('storeCode')} value={storeCode} />
+      )}
 
       <Input
         label="電話番号（任意）"

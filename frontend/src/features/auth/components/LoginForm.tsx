@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { useAuth } from '../hooks/useAuth'
 import { UserRole } from '../types'
+import { useQueryParams } from '@/hooks/useQueryParams'
 import styles from './LoginForm.module.css'
 
 const loginSchema = z.object({
@@ -26,14 +27,23 @@ export const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const { login } = useAuth()
+  const { storeCode } = useQueryParams()
+  const hasStoreCodeFromQR = role === 'customer' && !!storeCode
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
+
+  useEffect(() => {
+    if (hasStoreCodeFromQR) {
+      setValue('storeCode', storeCode)
+    }
+  }, [hasStoreCodeFromQR, storeCode, setValue])
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true)
@@ -63,6 +73,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <h2 className={styles.title}>{getRoleLabel()}ログイン</h2>
 
+      {hasStoreCodeFromQR && (
+        <div className={styles.storeInfo}>
+          店舗コード: {storeCode} でログインします
+        </div>
+      )}
+
       {error && <div className={styles.error}>{error}</div>}
 
       <Input
@@ -81,7 +97,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
         fullWidth
       />
 
-      {role === 'customer' && (
+      {role === 'customer' && !hasStoreCodeFromQR && (
         <Input
           label="店舗コード"
           {...register('storeCode')}
@@ -89,6 +105,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
           placeholder="例: ABC123"
           fullWidth
         />
+      )}
+
+      {hasStoreCodeFromQR && (
+        <input type="hidden" {...register('storeCode')} value={storeCode} />
       )}
 
       <Button type="submit" fullWidth disabled={isLoading}>

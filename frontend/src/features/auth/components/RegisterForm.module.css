@@ -54,3 +54,13 @@
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
 }
+
+.storeInfo {
+  padding: 0.75rem;
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 0.375rem;
+  color: var(--primary-color);
+  font-size: 0.875rem;
+  text-align: center;
+}
