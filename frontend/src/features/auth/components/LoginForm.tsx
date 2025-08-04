@@ -13,7 +13,7 @@ import styles from './LoginForm.module.css'
 const loginSchema = z.object({
   email: z.string().email('正しいメールアドレスを入力してください'),
   password: z.string().min(6, 'パスワードは6文字以上で入力してください'),
-  storeId: z.string().optional(),
+  storeCode: z.string().length(6, '店舗コードは6文字で入力してください').optional(),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -83,9 +83,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
 
       {role === 'customer' && (
         <Input
-          label="店舗ID"
-          {...register('storeId')}
-          error={errors.storeId?.message}
+          label="店舗コード"
+          {...register('storeCode')}
+          error={errors.storeCode?.message}
+          placeholder="例: ABC123"
           fullWidth
         />
       )}

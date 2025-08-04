@@ -14,7 +14,7 @@ const registerCustomerSchema = z.object({
   email: z.string().email('正しいメールアドレスを入力してください'),
   password: z.string().min(6, 'パスワードは6文字以上で入力してください'),
   passwordConfirm: z.string(),
-  storeId: z.string().min(1, '店舗IDを入力してください'),
+  storeCode: z.string().length(6, '店舗コードは6文字で入力してください'),
   phone: z.string().optional(),
   gender: z.enum(['male', 'female', '']).optional(),
   birthday: z.string().optional(),
@@ -78,9 +78,10 @@ export const RegisterCustomerForm: React.FC = () => {
       />
 
       <Input
-        label="店舗ID"
-        {...register('storeId')}
-        error={errors.storeId?.message}
+        label="店舗コード"
+        {...register('storeCode')}
+        error={errors.storeCode?.message}
+        placeholder="例: ABC123"
         fullWidth
       />
 

@@ -7,6 +7,7 @@ export interface IStore {
   email: Email
   password: Password
   phone: string
+  qrCode?: string
   isActive: boolean
   cancelDeadlineHour: number
   onlineBookingDeadlineMinute: number
@@ -27,7 +28,8 @@ export class Store implements IStore {
     public readonly onlineBookingDeadlineMinute: number,
     public readonly maxReservationMonthAhead: number,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
+    public readonly qrCode?: string
   ) {}
 
   static createNew(params: {
@@ -36,6 +38,7 @@ export class Store implements IStore {
     password: string
     phone: string
   }): Store {
+    const qrCode = Store.generateQrCode()
     return new Store(
       '',
       params.name,
@@ -47,7 +50,17 @@ export class Store implements IStore {
       60, // デフォルト60分前まで
       3,  // デフォルト3ヶ月先まで
       new Date(),
-      new Date()
+      new Date(),
+      qrCode
     )
+  }
+
+  static generateQrCode(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    let result = ''
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    return result
   }
 }

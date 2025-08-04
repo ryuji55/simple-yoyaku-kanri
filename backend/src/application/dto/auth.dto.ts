@@ -1,6 +1,7 @@
 export interface LoginDto {
   email: string
   password: string
+  storeCode?: string
 }
 
 export interface RegisterStoreDto {
@@ -12,7 +13,7 @@ export interface RegisterStoreDto {
 }
 
 export interface RegisterCustomerDto {
-  storeId: string
+  storeCode: string
   name: string
   email: string
   password: string

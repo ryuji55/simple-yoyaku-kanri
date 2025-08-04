@@ -3,7 +3,7 @@ export type UserRole = 'admin' | 'store' | 'customer'
 export interface LoginDto {
   email: string
   password: string
-  storeId?: string
+  storeCode?: string
 }
 
 export interface RegisterStoreDto {
@@ -18,7 +18,7 @@ export interface RegisterCustomerDto {
   name: string
   email: string
   password: string
-  storeId: string
+  storeCode: string
   phone?: string
   gender?: 'male' | 'female'
   birthday?: string

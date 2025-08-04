@@ -17,7 +17,7 @@ export class RegisterCustomerUseCase {
   ) {}
 
   async execute(dto: RegisterCustomerDto): Promise<AuthResultDto> {
-    const store = await this.storeRepository.findById(dto.storeId)
+    const store = await this.storeRepository.findByQrCode(dto.storeCode)
     if (!store) {
       throw new NotFoundError('店舗が見つかりません')
     }
@@ -25,7 +25,7 @@ export class RegisterCustomerUseCase {
     const email = new Email(dto.email)
     const existingCustomer = await this.customerRepository.findByEmailAndStoreId(
       email,
-      dto.storeId
+      store.id
     )
 
     if (existingCustomer) {
@@ -36,7 +36,7 @@ export class RegisterCustomerUseCase {
       email: dto.email,
       password: dto.password,
       name: dto.name,
-      storeId: dto.storeId,
+      storeId: store.id,
       phone: dto.phone,
       gender: dto.gender,
       birthday: dto.birthday

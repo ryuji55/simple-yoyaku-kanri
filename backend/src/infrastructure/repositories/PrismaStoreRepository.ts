@@ -23,12 +23,21 @@ export class PrismaStoreRepository implements IStoreRepository {
     return store ? this.toDomain(store) : null
   }
 
+  async findByQrCode(qrCode: string): Promise<Store | null> {
+    const store = await this.prisma.store.findUnique({
+      where: { qr_code: qrCode }
+    })
+
+    return store ? this.toDomain(store) : null
+  }
+
   async save(store: Store): Promise<Store> {
     const data = {
       name: store.name,
       email: store.email.toString(),
       password: store.password.toString(),
       phone: store.phone,
+      qr_code: store.qrCode,
       is_active: store.isActive,
       cancel_deadline_hour: store.cancelDeadlineHour,
       online_booking_deadline_minute: store.onlineBookingDeadlineMinute,
@@ -62,7 +71,8 @@ export class PrismaStoreRepository implements IStoreRepository {
       prismaStore.online_booking_deadline_minute,
       prismaStore.max_reservation_month_ahead,
       prismaStore.createdAt,
-      prismaStore.updatedAt
+      prismaStore.updatedAt,
+      prismaStore.qr_code || undefined
     )
   }
 }

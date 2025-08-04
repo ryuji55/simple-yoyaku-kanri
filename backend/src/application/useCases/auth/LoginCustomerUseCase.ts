@@ -16,10 +16,19 @@ export class LoginCustomerUseCase {
   ) {}
 
   async execute(dto: LoginDto): Promise<AuthResultDto> {
+    if (!dto.storeCode) {
+      throw new UnauthorizedError('店舗コードが必要です')
+    }
+
+    const store = await this.storeRepository.findByQrCode(dto.storeCode)
+    if (!store) {
+      throw new UnauthorizedError('店舗が見つかりません')
+    }
+
     const email = new Email(dto.email)
     const password = new Password(dto.password)
 
-    const customer = await this.customerRepository.findByEmail(email)
+    const customer = await this.customerRepository.findByEmailAndStoreId(email, store.id)
     if (!customer) {
       throw new UnauthorizedError('メールアドレスまたはパスワードが正しくありません')
     }
@@ -37,10 +46,6 @@ export class LoginCustomerUseCase {
       throw new UnauthorizedError('アカウントが無効化されています')
     }
 
-    const store = await this.storeRepository.findById(customer.storeId)
-    if (!store) {
-      throw new UnauthorizedError('店舗情報が見つかりません')
-    }
 
     const token = this.jwtService.generateToken({
       id: customer.id,

@@ -27,9 +27,9 @@ export const registerStoreValidator: ValidationChain[] = [
 ]
 
 export const registerCustomerValidator: ValidationChain[] = [
-  body('storeId')
-    .notEmpty().withMessage('店舗IDは必須です')
-    .isUUID().withMessage('有効な店舗IDを入力してください'),
+  body('storeCode')
+    .notEmpty().withMessage('店舗コードは必須です')
+    .isLength({ min: 6, max: 6 }).withMessage('店舗コードは6文字で入力してください'),
   body('name')
     .notEmpty().withMessage('名前は必須です')
     .isLength({ min: 1, max: 100 }).withMessage('名前は1〜100文字で入力してください'),

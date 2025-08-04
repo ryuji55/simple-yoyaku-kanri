@@ -39,6 +39,7 @@ model Store {
   email                     String     @unique
   password                  String
   phone                     String
+  qr_code                   String?    @unique
   is_active                 Boolean    @default(true)
   cancel_deadline_hour      Int
   online_booking_deadline_minute Int
