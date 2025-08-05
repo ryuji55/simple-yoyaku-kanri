@@ -1,7 +1,7 @@
 import { AdminRepository } from '../../repositories/adminRepository';
 import { AuthService } from '../../services/authService';
 import { ValidationService } from '../../services/validationService';
-import { LoginInput, AdminData } from '../../types';
+import type { AdminData, LoginInput } from '../../types';
 
 export class LoginUseCase {
   private adminRepository: AdminRepository;
@@ -12,11 +12,13 @@ export class LoginUseCase {
     this.authService = new AuthService();
   }
 
-  async execute(input: LoginInput): Promise<{ admin: AdminData; token: string }> {
+  async execute(
+    input: LoginInput,
+  ): Promise<{ admin: AdminData; token: string }> {
     // Validate input
     const validatedInput = ValidationService.validate<LoginInput>(
       ValidationService.loginSchema,
-      input
+      input,
     );
 
     // Find admin by email
@@ -33,7 +35,7 @@ export class LoginUseCase {
     // Verify password
     const isPasswordValid = await this.authService.comparePassword(
       validatedInput.password,
-      admin.password!
+      admin.password!,
     );
     if (!isPasswordValid) {
       throw new Error('メールアドレスまたはパスワードが正しくありません');
@@ -43,7 +45,7 @@ export class LoginUseCase {
     const token = this.authService.generateToken({
       id: admin.id,
       email: admin.email,
-      role: 'admin'
+      role: 'admin',
     });
 
     // Remove password from response
@@ -51,7 +53,7 @@ export class LoginUseCase {
 
     return {
       admin: adminWithoutPassword as AdminData,
-      token
+      token,
     };
   }
 }

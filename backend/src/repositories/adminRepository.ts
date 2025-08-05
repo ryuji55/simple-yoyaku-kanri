@@ -1,19 +1,19 @@
 import { PrismaClient } from '../../generated/prisma';
-import { AdminData, CreateAdminInput } from '../types';
+import type { AdminData, CreateAdminInput } from '../types';
 
 const prisma = new PrismaClient();
 
 export class AdminRepository {
   async findByEmail(email: string): Promise<AdminData | null> {
     const admin = await prisma.admin.findUnique({
-      where: { email }
+      where: { email },
     });
     return admin;
   }
 
   async findById(id: string): Promise<AdminData | null> {
     const admin = await prisma.admin.findUnique({
-      where: { id }
+      where: { id },
     });
     return admin;
   }
@@ -22,8 +22,8 @@ export class AdminRepository {
     const admin = await prisma.admin.create({
       data: {
         email: data.email,
-        password: data.password
-      }
+        password: data.password,
+      },
     });
     return admin;
   }

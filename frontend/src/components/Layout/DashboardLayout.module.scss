@@ -1,0 +1,111 @@
+.container {
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+}
+
+.header {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  box-shadow: var(--shadow-sm);
+}
+
+.headerContent {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  
+  @media (min-width: 1024px) {
+    padding: 0 var(--space-8);
+  }
+}
+
+.logoSection {
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.nav {
+  display: none;
+  align-items: center;
+  gap: var(--space-6);
+  flex: 1;
+  justify-content: center;
+  
+  @media (min-width: 768px) {
+    display: flex;
+  }
+}
+
+.navLink {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: var(--space-2) 0;
+  position: relative;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: var(--text-primary);
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: width 0.2s ease;
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.userEmail {
+  display: none;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  
+  @media (min-width: 640px) {
+    display: block;
+  }
+}
+
+.main {
+  padding: var(--space-8) 0;
+}
+
+.mainContent {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  
+  @media (min-width: 1024px) {
+    padding: 0 var(--space-8);
+  }
+}
