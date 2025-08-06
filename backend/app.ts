@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { PrismaClient } from "@prisma/client";
 import { config } from "./src/config/env";
 import { errorHandler } from "./src/middleware/errorHandler";
+import { SeedService } from "./src/services/seedService";
 import adminRoutes from "./src/routes/admin";
 import authRoutes from "./src/routes/auth";
 
@@ -37,7 +38,23 @@ app.use("/api/admin", adminRoutes);
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
-const port = config.port;
-app.listen(port, () => {
-  console.log(`Server running on port ${port} in ${config.nodeEnv} mode`);
-});
+// Initialize seed service
+const seedService = new SeedService();
+
+const startServer = async () => {
+  try {
+    // Seed initial admin if needed
+    await seedService.seedInitialAdminIfNeeded();
+    
+    // Start server
+    const port = config.port;
+    app.listen(port, () => {
+      console.log(`Server running on port ${port} in ${config.nodeEnv} mode`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();

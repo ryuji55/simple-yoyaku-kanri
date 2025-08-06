@@ -14,6 +14,10 @@ const registerSchema = z.object({
     .string()
     .min(1, 'メールアドレスは必須です')
     .email('メールアドレスの形式が正しくありません'),
+  confirmEmail: z
+    .string()
+    .min(1, 'メールアドレス確認は必須です')
+    .email('メールアドレスの形式が正しくありません'),
   password: z
     .string()
     .min(8, 'パスワードは8文字以上である必要があります')
@@ -24,6 +28,9 @@ const registerSchema = z.object({
   confirmPassword: z
     .string()
     .min(1, 'パスワード確認は必須です'),
+}).refine((data) => data.email === data.confirmEmail, {
+  message: 'メールアドレスが一致しません',
+  path: ['confirmEmail'],
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'パスワードが一致しません',
   path: ['confirmPassword'],
@@ -79,6 +86,15 @@ export const RegisterForm: React.FC = () => {
           label="メールアドレス"
           placeholder="admin@example.com"
           error={errors.email?.message}
+          autoComplete="email"
+        />
+
+        <Input
+          {...formRegister('confirmEmail')}
+          type="email"
+          label="メールアドレス確認"
+          placeholder="admin@example.com"
+          error={errors.confirmEmail?.message}
           autoComplete="email"
         />
 
