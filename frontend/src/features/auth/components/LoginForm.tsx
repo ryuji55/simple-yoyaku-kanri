@@ -5,8 +5,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '@/providers/AuthProvider';
-import { Button } from '@/components/Elements/Button';
-import { Input } from '@/components/Elements/Input';
 import styles from './AuthForm.module.scss';
 
 const loginSchema = z.object({
@@ -47,56 +45,71 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-      <div className={styles.formHeader}>
-        <h1 className={styles.title}>ログイン</h1>
-        <p className={styles.subtitle}>管理画面にアクセス</p>
-      </div>
-
-      {error && (
-        <div className={styles.errorAlert}>
-          {error}
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <div className={styles.formHeader}>
+          <div className={styles.systemTitle}>シンプルで使いやすい予約管理システム</div>
+          <h1 className={styles.title}>ログイン</h1>
+          <p className={styles.subtitle}>管理画面にアクセス</p>
         </div>
-      )}
 
-      <div className={styles.formFields}>
-        <Input
-          {...register('email')}
-          type="email"
-          label="メールアドレス"
-          placeholder="admin@example.com"
-          error={errors.email?.message}
-          autoComplete="email"
-        />
+        {error && (
+          <div className={styles.errorAlert}>
+            {error}
+          </div>
+        )}
 
-        <Input
-          {...register('password')}
-          type="password"
-          label="パスワード"
-          placeholder="••••••••"
-          error={errors.password?.message}
-          autoComplete="current-password"
-        />
-      </div>
+        <div className={styles.formFields}>
+          <div className={styles.formGroup}>
+            <label htmlFor="email" className={styles.inputLabel}>メールアドレス</label>
+            <input
+              {...register('email')}
+              id="email"
+              type="email"
+              className={styles.inputField}
+              placeholder="admin@example.com"
+              autoComplete="email"
+            />
+            {errors.email && (
+              <div className={styles.inputError}>
+                ✗ {errors.email.message}
+              </div>
+            )}
+          </div>
 
-      <Button
-        type="submit"
-        fullWidth
-        size="lg"
-        loading={loading}
-        disabled={loading}
-      >
-        ログイン
-      </Button>
+          <div className={styles.formGroup}>
+            <label htmlFor="password" className={styles.inputLabel}>パスワード</label>
+            <input
+              {...register('password')}
+              id="password"
+              type="password"
+              className={styles.inputField}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+            {errors.password && (
+              <div className={styles.inputError}>
+                ✗ {errors.password.message}
+              </div>
+            )}
+          </div>
+        </div>
 
-      <div className={styles.formFooter}>
-        <p>
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={loading}
+        >
+          {loading ? 'ログイン中...' : 'ログイン'}
+        </button>
+
+        <div className={styles.formFooter}>
           アカウントをお持ちでない方は{' '}
           <a href="/register" className={styles.link}>
             新規登録
           </a>
-        </p>
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   );
 };

@@ -1,55 +1,252 @@
-.form {
+// Container and Layout
+.container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+  }
 }
 
+.form {
+  width: 100%;
+}
+
+// Header Styles
 .formHeader {
   text-align: center;
-  margin-bottom: var(--space-8);
+  margin-bottom: 32px;
+}
+
+.systemTitle {
+  color: #667eea;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
 }
 
 .title {
-  font-size: 2rem;
+  color: #2d3748;
+  font-size: 28px;
   font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: var(--space-2);
+  margin-bottom: 8px;
 }
 
 .subtitle {
-  font-size: 1rem;
-  color: var(--text-secondary);
+  color: #718096;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
+// Error Alert
 .errorAlert {
-  background-color: #fef2f2;
-  border: 1px solid #fee2e2;
-  color: #dc2626;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius);
-  margin-bottom: var(--space-4);
-  font-size: 0.875rem;
+  background-color: #fed7d7;
+  border: 1px solid #feb2b2;
+  color: #c53030;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
+// Form Fields
 .formFields {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
+  gap: 24px;
+  margin-bottom: 32px;
 }
 
+.formGroup {
+  width: 100%;
+}
+
+// Input Styles
+.inputWrapper {
+  position: relative;
+}
+
+.inputLabel {
+  display: block;
+  color: #2d3748;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.inputField {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  background: #fff;
+  
+  &:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  &.error {
+    border-color: #e53e3e;
+  }
+  
+  &.success {
+    border-color: #38a169;
+  }
+}
+
+// Input Feedback
+.inputHint {
+  font-size: 12px;
+  color: #718096;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.inputError {
+  font-size: 12px;
+  color: #e53e3e;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.inputSuccess {
+  font-size: 12px;
+  color: #38a169;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// Match Status
+.matchStatus {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+  transition: all 0.2s ease;
+  
+  &.hidden {
+    display: none;
+  }
+  
+  &.error {
+    background: #fed7d7;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+  }
+  
+  &.success {
+    background: #c6f6d5;
+    color: #2f855a;
+    border: 1px solid #9ae6b4;
+  }
+}
+
+// Password Strength
+.passwordStrength {
+  margin-top: 8px;
+}
+
+.strengthBar {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.strengthFill {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.strengthText {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+// Button Styles
+.submitButton {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 24px;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// Footer
 .formFooter {
   text-align: center;
-  margin-top: var(--space-6);
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: #718096;
+  font-size: 14px;
 }
 
 .link {
-  color: var(--color-primary);
-  font-weight: 500;
+  color: #667eea;
   text-decoration: none;
+  font-weight: 500;
   
   &:hover {
     text-decoration: underline;
+  }
+}
+
+// Icons
+.icon {
+  width: 14px;
+  height: 14px;
+}
+
+// Responsive Design
+@media (max-width: 480px) {
+  .container {
+    padding: 24px;
+    margin: 10px;
+  }
+  
+  .title {
+    font-size: 24px;
   }
 }
