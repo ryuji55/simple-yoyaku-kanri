@@ -1,12 +1,13 @@
 import * as bcrypt from 'bcrypt';
-import type { SignOptions } from 'jsonwebtoken';
 import * as jwt from 'jsonwebtoken';
-import { config } from '../config/env';
+import { env } from '../config/env.validation';
 import type { JwtPayload } from '../types';
 
 export class AuthService {
+  private readonly bcryptSaltRounds = 10;
+
   async hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, config.bcryptSaltRounds);
+    return bcrypt.hash(password, this.bcryptSaltRounds);
   }
 
   async comparePassword(
@@ -17,13 +18,12 @@ export class AuthService {
   }
 
   generateToken(payload: JwtPayload): string {
-    const options: SignOptions = {
-      expiresIn: config.jwtExpiresIn as any,
-    };
-    return jwt.sign(payload, config.jwtSecret, options);
+    return jwt.sign(payload, env.JWT_SECRET, {
+      expiresIn: env.JWT_EXPIRES_IN as any,
+    });
   }
 
   verifyToken(token: string): JwtPayload {
-    return jwt.verify(token, config.jwtSecret) as JwtPayload;
+    return jwt.verify(token, env.JWT_SECRET) as JwtPayload;
   }
 }

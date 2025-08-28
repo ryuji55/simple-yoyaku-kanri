@@ -1,19 +1,18 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { PrismaClient } from "@prisma/client";
-import { config } from "./src/config/env";
+import { env } from "./src/config/env.validation";
 import { errorHandler } from "./src/middleware/errorHandler";
 import adminRoutes from "./src/routes/admin";
 import authRoutes from "./src/routes/auth";
+import healthRoutes from "./src/routes/health";
 
 const app = express();
-const prisma = new PrismaClient();
 
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: config.isDevelopment ? true : process.env.FRONTEND_URL,
+  origin: env.isDevelopment ? 'http://localhost:3000' : env.FRONTEND_URL,
   credentials: true
 }));
 
@@ -21,8 +20,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check endpoint
-app.get("/", (req, res) => {
+// Health check and monitoring
+app.use(healthRoutes);
+
+// Root endpoint
+app.get("/", (_req, res) => {
   res.json({ 
     status: "ok",
     service: "Simple Yoyaku Kanri API",
@@ -37,7 +39,7 @@ app.use("/api/admin", adminRoutes);
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
-const port = config.port;
+const port = env.PORT;
 app.listen(port, () => {
-  console.log(`Server running on port ${port} in ${config.nodeEnv} mode`);
+  console.log(`Server running on port ${port} in ${env.NODE_ENV} mode`);
 });
