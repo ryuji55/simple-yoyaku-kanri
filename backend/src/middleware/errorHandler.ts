@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { config } from '../config/env';
+import { env } from '../config/env.validation';
 
 export interface ApiError extends Error {
   statusCode?: number;
@@ -16,7 +16,7 @@ export const errorHandler = (
   const message = err.message || 'Internal Server Error';
 
   // Log error details in development
-  if (config.isDevelopment) {
+  if (env.isDevelopment) {
     console.error('Error:', err);
   }
 
@@ -24,7 +24,7 @@ export const errorHandler = (
     success: false,
     error: {
       message,
-      ...(config.isDevelopment && { stack: err.stack }),
+      ...(env.isDevelopment && { stack: err.stack }),
     },
   });
 };
